@@ -21,9 +21,35 @@ void Game::updatePointsText()
 	this->pointsText.setPosition(sf::Vector2f(600.f - (this->pointsText.getGlobalBounds().width / 2), 300.f));
 }
 
+void Game::spawnSpike()
+{
+	float x;
+	float y;
+	Spike spike;
+
+	int pos = rand() % 40;
+
+	if (pos <= 23)
+	{
+		spike.setPosition(sf::Vector2f(50.f * pos, 0.f));
+	}
+	else if (pos <= 39)
+	{
+		spike.setPosition(sf::Vector2f(1200.f, 50.f * (pos - 24)));
+		spike.rotate(90.f);
+	}
+	this->spikes.push_back(spike);
+}
+
 void Game::initVariables()
 {
 	this->window = nullptr;
+
+	this->spawnSpike();
+	this->spawnSpike();
+	this->spawnSpike();
+	this->spawnSpike();
+	this->spawnSpike();
 }
 
 //Private functions
@@ -34,6 +60,15 @@ void Game::initWindow()
 
 	this->window = new sf::RenderWindow(this->videoMode, "Game", sf::Style::Titlebar | sf::Style::Close);
 	this->window->setFramerateLimit(60);
+}
+
+void Game::collisions()
+{
+	for (auto& i : this->spikes)
+	{
+		if (this->player.getGlobalBounds().intersects(i.getGobalBounds()))
+			std::cout << "Collision" << std::endl;
+	}
 }
 
 //Constructor destructor
@@ -81,6 +116,8 @@ void Game::update()
 
 	this->player.update(*this->window);
 
+	this->collisions();
+
 	this->updatePointsText();
 }
 
@@ -89,8 +126,14 @@ void Game::render()
 {
 	this->window->clear(sf::Color(159, 239, 255));
 
+	//Render spikes
+	for (auto& i : this->spikes)
+		i.render(*this->window);
+
+	//Render points text
 	this->window->draw(pointsText);
 
+	//Render player
 	this->player.render(*this->window);
 
 	this->window->display();

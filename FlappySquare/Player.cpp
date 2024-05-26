@@ -85,6 +85,11 @@ int Player::getPoints()
 	return this->points;
 }
 
+sf::FloatRect Player::getGlobalBounds()
+{
+	return this->shape.getGlobalBounds();
+}
+
 //Update
 void Player::update(sf::RenderWindow &window)
 {

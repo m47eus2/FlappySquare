@@ -3,6 +3,7 @@
 #include <sstream>
 
 #include "Player.h"
+#include "Spike.h"
 
 class Game
 {
@@ -14,15 +15,20 @@ class Game
 	sf::Font font;
 	sf::Text pointsText;
 
+	std::vector<Spike> spikes;
+
 	Player player;
 
 	//Private functions
 	void initFonts();
 	void initPointsText();
 	void updatePointsText();
+	void spawnSpike();
 
 	void initVariables();
 	void initWindow();
+
+	void collisions();
 
 public:
 	//Constructor destructor

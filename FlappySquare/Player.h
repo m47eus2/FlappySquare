@@ -26,6 +26,7 @@ public:
 	void deform();
 
 	int getPoints();
+	sf::FloatRect getGlobalBounds();
 	void update(sf::RenderWindow& window);
 	void render(sf::RenderTarget &target);
 };
