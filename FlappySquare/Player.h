@@ -12,6 +12,7 @@ private:
 
 	float gravityValue;
 	bool hold;
+	bool bounce;
 
 	int points;
 
@@ -27,6 +28,7 @@ public:
 
 	int getPoints();
 	sf::FloatRect getGlobalBounds();
+	bool getBounce();
 	void update(sf::RenderWindow& window);
 	void render(sf::RenderTarget &target);
 };

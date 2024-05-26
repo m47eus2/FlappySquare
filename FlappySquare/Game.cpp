@@ -26,30 +26,46 @@ void Game::spawnSpike()
 	float x;
 	float y;
 	Spike spike;
+	bool rep = false;
 
-	int pos = rand() % 40;
+	do
+	{
+		rep = false;
+		int pos = rand() % 64;
+		std::cout << pos << std::endl;
+		for (auto& i : this->rands)
+			if (pos == i) rep = true;
 
-	if (pos <= 23)
-	{
-		spike.setPosition(sf::Vector2f(50.f * pos, 0.f));
-	}
-	else if (pos <= 39)
-	{
-		spike.setPosition(sf::Vector2f(1200.f, 50.f * (pos - 24)));
-		spike.rotate(90.f);
-	}
+		if (rep == false)
+		{
+			//Top 
+			if (pos <= 23)
+			{
+				spike.setPosition(sf::Vector2f(50.f * pos, 0.f));
+			}
+			//Right
+			else if (pos <= 39)
+			{
+				spike.setPosition(sf::Vector2f(1200.f, 50.f * (pos - 24)));
+				spike.rotate(90.f);
+			}
+			//Bottom
+			else if (pos <= 63)
+			{
+				spike.setPosition(sf::Vector2f(1200.f - (pos - 40) * 50.f, 800.f));
+				spike.rotate(180.f);
+			}
+
+			this->rands.push_back(pos);
+		}
+	} while (rep == true);
+
 	this->spikes.push_back(spike);
 }
 
 void Game::initVariables()
 {
 	this->window = nullptr;
-
-	this->spawnSpike();
-	this->spawnSpike();
-	this->spawnSpike();
-	this->spawnSpike();
-	this->spawnSpike();
 }
 
 //Private functions
@@ -62,13 +78,19 @@ void Game::initWindow()
 	this->window->setFramerateLimit(60);
 }
 
-void Game::collisions()
+void Game::SpikeCollisions()
 {
 	for (auto& i : this->spikes)
 	{
 		if (this->player.getGlobalBounds().intersects(i.getGobalBounds()))
 			std::cout << "Collision" << std::endl;
 	}
+}
+
+void Game::updateSpikes()
+{
+	if (this->player.getBounce())
+		this->spawnSpike();
 }
 
 //Constructor destructor
@@ -116,7 +138,9 @@ void Game::update()
 
 	this->player.update(*this->window);
 
-	this->collisions();
+	this->SpikeCollisions();
+
+	this->updateSpikes();
 
 	this->updatePointsText();
 }

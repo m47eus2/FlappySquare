@@ -16,6 +16,7 @@ class Game
 	sf::Text pointsText;
 
 	std::vector<Spike> spikes;
+	std::vector<int> rands;
 
 	Player player;
 
@@ -28,7 +29,8 @@ class Game
 	void initVariables();
 	void initWindow();
 
-	void collisions();
+	void SpikeCollisions();
+	void updateSpikes();
 
 public:
 	//Constructor destructor

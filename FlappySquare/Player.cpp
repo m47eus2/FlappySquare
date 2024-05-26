@@ -9,6 +9,7 @@ void Player::initVariables()
 	this->hold = false;
 
 	this->points = 0;
+	this->bounce = false;
 }
 
 void Player::initShape()
@@ -48,16 +49,19 @@ void Player::gravity()
 
 void Player::checkCollision(sf::RenderWindow& window)
 {
+	this->bounce = false;
 	//Collision with edges
 	if (this->shape.getGlobalBounds().left <= 0)
 	{
 		this->speedx = fabs(speedx);
 		this->points += 1;
+		this->bounce = true;
 	}
 	if (this->shape.getGlobalBounds().left + this->shape.getGlobalBounds().getSize().x >= window.getSize().x)
 	{
 		this->speedx = -fabs(speedx);
 		this->points += 1;
+		this->bounce = true;
 	}
 
 	//Collision with floor
@@ -88,6 +92,11 @@ int Player::getPoints()
 sf::FloatRect Player::getGlobalBounds()
 {
 	return this->shape.getGlobalBounds();
+}
+
+bool Player::getBounce()
+{
+	return this->bounce;
 }
 
 //Update
